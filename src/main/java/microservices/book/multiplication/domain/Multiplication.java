@@ -1,11 +1,25 @@
 package microservices.book.multiplication.domain;
 
-import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
+import java.util.Objects;
+@Entity
 public class Multiplication {
+
+    @Id
+    @GeneratedValue
+    @Column(name = "MULTIPLICATION_ID")
+    private long id;
+
     private final int factorA;
     private final int factorB;
 
+    public Multiplication() {
+        this(0,0);
+    }
 
     public Multiplication(int factorA, int factorB)
     {
