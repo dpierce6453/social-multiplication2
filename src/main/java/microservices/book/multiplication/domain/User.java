@@ -22,14 +22,12 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        if (alias != null) {
-            return alias.equals(user.alias);
-        }
+        return id == user.id && getAlias().equals(user.getAlias());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(alias);
+        return Objects.hash(id, getAlias());
     }
 
     protected User() {

@@ -3,6 +3,7 @@ package microservices.book.multiplication.service;
 import microservices.book.multiplication.domain.Multiplication;
 import microservices.book.multiplication.domain.MultiplicationResultAttempt;
 import microservices.book.multiplication.domain.User;
+import microservices.book.multiplication.repository.MultiplicationRepository;
 import microservices.book.multiplication.repository.MultiplicationResultAttemptRepository;
 import microservices.book.multiplication.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,15 +11,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class MultiplicationServiceImpl implements MultiplicationService {
-    private final RandomGeneratorService randomGeneratorService;
-    private final MultiplicationResultAttemptRepository attemptRepository;
-    private final UserRepository userRepository;
+    private RandomGeneratorService randomGeneratorService;
+    private MultiplicationResultAttemptRepository attemptRepository;
+    private UserRepository userRepository;
 
-    @Autowired public MultiplicationServiceImpl(final RandomGeneratorService randomGeneratorService,
+    @Autowired
+    public MultiplicationServiceImpl(final RandomGeneratorService randomGeneratorService,
         final MultiplicationResultAttemptRepository attemptRepository,
         final UserRepository userRepository) {
             this.randomGeneratorService = randomGeneratorService;
@@ -26,11 +29,19 @@ public class MultiplicationServiceImpl implements MultiplicationService {
             this.userRepository = userRepository;
     }
 
+
+
+    @Override
+    public List<MultiplicationResultAttempt> getStatsForUser(String userAlias) {
+        return attemptRepository.findTop5ByUserAliasOrderByIdDesc(userAlias);
+    }
     @Override
     public Multiplication createRandomMultiplication() {
         int FactorA = randomGeneratorService.generateRandomFactor();
         int FactorB = randomGeneratorService.generateRandomFactor();
         return new Multiplication(FactorA, FactorB);
+
+        /* I think I would put logic here to make sure this multiplication was unique */
     }
 
     @Transactional

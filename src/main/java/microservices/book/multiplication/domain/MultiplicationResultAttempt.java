@@ -9,7 +9,11 @@ public class MultiplicationResultAttempt {
     @GeneratedValue
     private Long id;
 
-   @ManyToOne(cascade = CascadeType.PERSIST)
+    public Long getId() {
+        return id;
+    }
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
    @JoinColumn(name = "USER_ID")
     private final User user;
 
@@ -34,12 +38,12 @@ public class MultiplicationResultAttempt {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MultiplicationResultAttempt attempt = (MultiplicationResultAttempt) o;
-        return getResultAttempt() == attempt.getResultAttempt() && isCorrect() == attempt.isCorrect() && getUser().equals(attempt.getUser()) && getMultiplication().equals(attempt.getMultiplication());
+        return getResultAttempt() == attempt.getResultAttempt() && isCorrect() == attempt.isCorrect() && Objects.equals(getId(), attempt.getId()) && getUser().equals(attempt.getUser()) && getMultiplication().equals(attempt.getMultiplication());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUser(), getMultiplication(), getResultAttempt(), isCorrect());
+        return Objects.hash(getId(), getUser(), getMultiplication(), getResultAttempt(), isCorrect());
     }
 
     public MultiplicationResultAttempt() {
