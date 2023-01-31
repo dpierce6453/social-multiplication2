@@ -21,23 +21,16 @@ final class MultiplicationResultAttemptController {
     }
 
     @PostMapping
-    ResponseEntity<ResultResponse> postResult(@RequestBody MultiplicationResultAttempt multiplicationResultAttempt) {
-        return ResponseEntity.ok(new ResultResponse(multiplicationService.checkAttempt(multiplicationResultAttempt)));
+    ResponseEntity<MultiplicationResultAttempt> postResult(@RequestBody MultiplicationResultAttempt multiplicationResultAttempt) {
+
+        boolean isCorrect = multiplicationService.checkAttempt(multiplicationResultAttempt);
+        MultiplicationResultAttempt attemptCopy =
+                new MultiplicationResultAttempt( multiplicationResultAttempt.getUser(),
+                        multiplicationResultAttempt.getMultiplication(),
+                        multiplicationResultAttempt.getResultAttempt(),
+                        isCorrect );
+        return ResponseEntity.ok(attemptCopy);
+
     }
 
-    static final class ResultResponse {
-        private final boolean correct;
-
-        public ResultResponse(boolean correct) {
-            this.correct = correct;
-        }
-
-        public ResultResponse() {
-            this.correct = true;
-        }
-
-        public boolean isCorrect() {
-            return correct;
-        }
-    }
 }
