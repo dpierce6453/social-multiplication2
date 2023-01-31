@@ -7,6 +7,11 @@ public class MultiplicationResultAttempt {
     private final User user;
     private final Multiplication multiplication;
     private final int resultAttempt;
+    private final boolean correct;
+
+    public boolean isCorrect() {
+        return correct;
+    }
 
     public User getUser() {
         return user;
@@ -20,10 +25,11 @@ public class MultiplicationResultAttempt {
         return resultAttempt;
     }
 
-    public MultiplicationResultAttempt(User user, Multiplication multiplication, int resultAttempt) {
+    public MultiplicationResultAttempt(User user, Multiplication multiplication, int resultAttempt, boolean correct) {
         this.user = user;
         this.multiplication = multiplication;
         this.resultAttempt = resultAttempt;
+        this.correct = correct;
     }
 
     @Override
@@ -43,5 +49,6 @@ public class MultiplicationResultAttempt {
         user = null;
         multiplication = null;
         resultAttempt = -1;
+        correct = false;
     }
 }
