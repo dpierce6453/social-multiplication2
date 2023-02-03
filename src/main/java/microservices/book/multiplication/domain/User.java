@@ -1,8 +1,15 @@
 package microservices.book.multiplication.domain;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.Objects;
 
 public class User {
+    @Id
+    @GeneratedValue
+    @Column(name = "USER_ID")
+    private Long id;
     public final String alias;
 
     public User(String alias) {
@@ -14,12 +21,12 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return alias.equals(user.alias);
+        return Objects.equals(id, user.id) && Objects.equals(getAlias(), user.getAlias());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(alias);
+        return Objects.hash(id, getAlias());
     }
 
     protected User() {
