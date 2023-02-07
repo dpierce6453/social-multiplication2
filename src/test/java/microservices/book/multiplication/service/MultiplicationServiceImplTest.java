@@ -18,6 +18,7 @@ class MultiplicationServiceImplTest {
     @Mock
     private RandomGeneratorService randomGeneratorService;
 
+
     @BeforeEach
     public void setUp() { // With this call to initMocks we tell Mockito to process the annotations
         MockitoAnnotations.initMocks(this);
