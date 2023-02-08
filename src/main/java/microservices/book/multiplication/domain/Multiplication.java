@@ -15,13 +15,16 @@ public class Multiplication {
     private Long id;
 
     private final int factorA;
+
     private final int factorB;
 
+    private final int hashCodeValue;
 
     public Multiplication(int factorA, int factorB)
     {
         this.factorA = factorA;
         this.factorB = factorB;
+        hashCodeValue = hashCode();
     }
 
     public Multiplication() {
@@ -46,8 +49,13 @@ public class Multiplication {
     public int hashCode() {
         return Objects.hash(factorA, factorB);
     }
+
     public int getFactorB() {
         return factorB;
+    }
+
+    public int getHashCodeValue() {
+        return hashCodeValue;
     }
 
     @Override
