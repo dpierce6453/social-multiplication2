@@ -1,11 +1,11 @@
 package microservices.book.multiplication.repository;
 
-import microservices.book.multiplication.domain.User;
+import microservices.book.multiplication.domain.DBUser;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 
-public interface UserRepository extends CrudRepository<User, Long>
+public interface UserRepository extends CrudRepository<DBUser, Long>
 {
-    Optional<User> findByAlias(final String alias);
+    Optional<DBUser> findByAlias(final String alias);
 }

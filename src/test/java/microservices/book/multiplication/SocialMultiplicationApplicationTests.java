@@ -12,7 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
@@ -35,7 +35,7 @@ class SocialMultiplicationApplicationTests {
 	@Test
 	public void createRandomMultiplicationTest() {
 		given(randomGeneratorService.generateRandomFactor()).willReturn(50, 30);
-		given(multiplicationRepository.findByHashCodeValue(any())).willReturn(Optional.empty());
+		given(multiplicationRepository.findByHashCodeValue(anyInt())).willReturn(Optional.empty());
 
 		Multiplication multiplication = multiplicationService.createRandomMultiplication();
 

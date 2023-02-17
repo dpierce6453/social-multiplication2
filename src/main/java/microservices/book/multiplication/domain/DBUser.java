@@ -1,19 +1,18 @@
 package microservices.book.multiplication.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import org.springframework.lang.NonNull;
+
 import java.util.Objects;
 @Entity
-public class User {
+public class DBUser {
     @Id
     @GeneratedValue
-    @Column(name = "USER_ID")
+    @Column(name = "DBUSER_ID", updatable = false)
     private Long id;
     public final String alias;
 
-    public User(String alias) {
+    public DBUser(String alias) {
         this.alias = alias;
     }
 
@@ -21,8 +20,8 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(getAlias(), user.getAlias());
+        DBUser DBUser = (DBUser) o;
+        return Objects.equals(id, DBUser.id) && Objects.equals(getAlias(), DBUser.getAlias());
     }
 
     @Override
@@ -30,7 +29,7 @@ public class User {
         return Objects.hash(id, getAlias());
     }
 
-    protected User() {
+    protected DBUser() {
         alias = null;
     }
 

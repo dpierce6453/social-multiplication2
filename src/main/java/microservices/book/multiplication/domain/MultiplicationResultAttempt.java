@@ -9,10 +9,10 @@ public class MultiplicationResultAttempt {
     private Long id;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "USER_ID")
-    private final User user;
+    @JoinColumn(name = "DBUSER_ID", nullable = false)
+    private final DBUser dbUser;
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "MULTIPLICATION_ID")
+    @JoinColumn(name = "MULTIPLICATION_ID", nullable = false)
     private final Multiplication multiplication;
     private final int resultAttempt;
     private final boolean correct;
@@ -21,8 +21,8 @@ public class MultiplicationResultAttempt {
         return correct;
     }
 
-    public User getUser() {
-        return user;
+    public DBUser getDbUser() {
+        return dbUser;
     }
 
     public Multiplication getMultiplication() {
@@ -33,8 +33,8 @@ public class MultiplicationResultAttempt {
         return resultAttempt;
     }
 
-    public MultiplicationResultAttempt(User user, Multiplication multiplication, int resultAttempt, boolean correct) {
-        this.user = user;
+    public MultiplicationResultAttempt(DBUser user, Multiplication multiplication, int resultAttempt, boolean correct) {
+        this.dbUser = user;
         this.multiplication = multiplication;
         this.resultAttempt = resultAttempt;
         this.correct = correct;
@@ -45,16 +45,16 @@ public class MultiplicationResultAttempt {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MultiplicationResultAttempt that = (MultiplicationResultAttempt) o;
-        return getResultAttempt() == that.getResultAttempt() && getUser().equals(that.getUser()) && getMultiplication().equals(that.getMultiplication());
+        return getResultAttempt() == that.getResultAttempt() && getDbUser().equals(that.getDbUser()) && getMultiplication().equals(that.getMultiplication());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUser(), getMultiplication(), getResultAttempt());
+        return Objects.hash(getDbUser(), getMultiplication(), getResultAttempt());
     }
 
     public MultiplicationResultAttempt() {
-        user = null;
+        dbUser = null;
         multiplication = null;
         resultAttempt = -1;
         correct = false;
