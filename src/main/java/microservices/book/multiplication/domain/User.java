@@ -25,8 +25,8 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User dbUser = (User) o;
-        return getAlias().equals(dbUser.getAlias());
+        User user = (User) o;
+        return getAlias().equals(user.getAlias());
     }
 
     @Override

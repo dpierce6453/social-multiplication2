@@ -5,6 +5,7 @@ import microservices.book.multiplication.domain.Multiplication;
 import microservices.book.multiplication.domain.MultiplicationResultAttempt;
 import microservices.book.multiplication.repository.MultiplicationRepository;
 import microservices.book.multiplication.repository.MultiplicationResultAttemptRepository;
+import microservices.book.multiplication.repository.PlayerRepository;
 import microservices.book.multiplication.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,13 +32,15 @@ class MultiplicationServiceImplTest {
     private UserRepository UserRepository;
     @Mock
     private MultiplicationRepository multiplicationRepository;
+    @Mock
+    private PlayerRepository playerRepository;
 
 
 
     @BeforeEach
     public void setUp() { // With this call to initMocks we tell Mockito to process the annotations
         MockitoAnnotations.initMocks(this);
-        multiplicationServiceImpl = new MultiplicationServiceImpl(randomGeneratorService, attemptRepository, UserRepository, multiplicationRepository);
+        multiplicationServiceImpl = new MultiplicationServiceImpl(randomGeneratorService, attemptRepository, UserRepository, multiplicationRepository, playerRepository);
     }
 
     @Test
