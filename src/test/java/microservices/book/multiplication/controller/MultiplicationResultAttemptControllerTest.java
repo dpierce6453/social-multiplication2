@@ -1,7 +1,7 @@
 package microservices.book.multiplication.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import microservices.book.multiplication.domain.DBUser;
+import microservices.book.multiplication.domain.User;
 import microservices.book.multiplication.domain.Multiplication;
 import microservices.book.multiplication.domain.MultiplicationResultAttempt;
 import microservices.book.multiplication.service.MultiplicationService;
@@ -60,7 +60,7 @@ class MultiplicationResultAttemptControllerTest {
     private void genericParameterizeTest(final boolean correct) throws Exception {
         given(multiplicationService.checkAttempt(any(MultiplicationResultAttempt.class))).willReturn(correct);
 
-        DBUser user = new DBUser("John");
+        User user = new User("John");
 
         Multiplication multiplication = new Multiplication(50,70);
         MultiplicationResultAttempt attempt = new MultiplicationResultAttempt(user, multiplication, 3500, correct);
@@ -69,7 +69,7 @@ class MultiplicationResultAttemptControllerTest {
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(response.getContentAsString()).isEqualTo( jsonResult.write(
-                new MultiplicationResultAttempt(attempt.getDbUser(),
+                new MultiplicationResultAttempt(attempt.getUser(),
                         attempt.getMultiplication(),
                         attempt.getResultAttempt(),
                         correct) )

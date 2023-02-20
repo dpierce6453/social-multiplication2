@@ -9,8 +9,8 @@ public class MultiplicationResultAttempt {
     private Long id;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "DBUSER_ID", nullable = false)
-    private final DBUser dbUser;
+    @JoinColumn(name = "USER_ID", nullable = false)
+    private final User user;
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "MULTIPLICATION_ID", nullable = false)
     private final Multiplication multiplication;
@@ -21,8 +21,8 @@ public class MultiplicationResultAttempt {
         return correct;
     }
 
-    public DBUser getDbUser() {
-        return dbUser;
+    public User getUser() {
+        return user;
     }
 
     public Multiplication getMultiplication() {
@@ -33,8 +33,8 @@ public class MultiplicationResultAttempt {
         return resultAttempt;
     }
 
-    public MultiplicationResultAttempt(DBUser user, Multiplication multiplication, int resultAttempt, boolean correct) {
-        this.dbUser = user;
+    public MultiplicationResultAttempt(User user, Multiplication multiplication, int resultAttempt, boolean correct) {
+        this.user = user;
         this.multiplication = multiplication;
         this.resultAttempt = resultAttempt;
         this.correct = correct;
@@ -45,16 +45,16 @@ public class MultiplicationResultAttempt {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MultiplicationResultAttempt that = (MultiplicationResultAttempt) o;
-        return getResultAttempt() == that.getResultAttempt() && getDbUser().equals(that.getDbUser()) && getMultiplication().equals(that.getMultiplication());
+        return getResultAttempt() == that.getResultAttempt() && getUser().equals(that.getUser()) && getMultiplication().equals(that.getMultiplication());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getDbUser(), getMultiplication(), getResultAttempt());
+        return Objects.hash(getUser(), getMultiplication(), getResultAttempt());
     }
 
     public MultiplicationResultAttempt() {
-        dbUser = null;
+        user = null;
         multiplication = null;
         resultAttempt = -1;
         correct = false;

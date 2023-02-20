@@ -31,10 +31,6 @@ public class Multiplication {
         this(0,0);
     }
 
-    public int getFactorA() {
-        return factorA;
-    }
-
     @Override
     public boolean equals(Object o)
     {
@@ -52,6 +48,10 @@ public class Multiplication {
 
     public int getFactorB() {
         return factorB;
+    }
+
+    public int getFactorA() {
+        return factorA;
     }
 
     public int getHashCodeValue() {

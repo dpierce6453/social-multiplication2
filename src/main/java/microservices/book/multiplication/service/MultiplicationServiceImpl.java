@@ -1,6 +1,6 @@
 package microservices.book.multiplication.service;
 
-import microservices.book.multiplication.domain.DBUser;
+import microservices.book.multiplication.domain.User;
 import microservices.book.multiplication.domain.Multiplication;
 import microservices.book.multiplication.domain.MultiplicationResultAttempt;
 import microservices.book.multiplication.repository.MultiplicationRepository;
@@ -23,18 +23,18 @@ public class MultiplicationServiceImpl implements MultiplicationService {
 
     @Autowired public MultiplicationServiceImpl(RandomGeneratorService randomGeneratorService,
                                                 final MultiplicationResultAttemptRepository attemptRepository,
-                                                final UserRepository userRepository,
+                                                final UserRepository UserRepository,
                                                 MultiplicationRepository multiplicationRepository)
     {
         this.randomGeneratorService = randomGeneratorService;
         this.attemptRepository = attemptRepository;
-        this.userRepository = userRepository;
+        this.userRepository = UserRepository;
         this.multiplicationRepository = multiplicationRepository;
     }
 
     @Override
     public List<MultiplicationResultAttempt> getStatsForUser(String userAlias) {
-        return attemptRepository.findTop5ByDbUserAliasOrderByIdDesc(userAlias);
+        return attemptRepository.findTop5ByUserAliasOrderByIdDesc(userAlias);
     }
 
     @Override
@@ -49,9 +49,14 @@ public class MultiplicationServiceImpl implements MultiplicationService {
     @Transactional
     @Override
     public boolean checkAttempt(final MultiplicationResultAttempt attempt) {
-        Optional<DBUser> user = userRepository.findByAlias(attempt.getDbUser().getAlias());
-        DBUser newDBUser = new DBUser(attempt.getDbUser().getAlias());
+        Optional<User> user = userRepository.findByAlias(attempt.getUser().getAlias());
+        User newUser = new User(attempt.getUser().getAlias());
+//        if(user.isEmpty()) {
+//            userRepository.save(newUser);
+//        }
 
+//        Multiplication testMultiplication = new Multiplication(attempt.getMultiplication().getFactorA(), attempt.getMultiplication().getFactorB());
+//        multiplicationRepository.save(testMultiplication);
         // Avoids 'hack' attempts
         Assert.isTrue(!attempt.isCorrect(), "You can't send an attempt marked as correct!!");
 
@@ -61,7 +66,7 @@ public class MultiplicationServiceImpl implements MultiplicationService {
                 attempt.getMultiplication().getFactorB();
         // Creates a copy, now setting the 'correct' field accordingly
         MultiplicationResultAttempt checkedAttempt = new MultiplicationResultAttempt(
-                user.orElse(newDBUser),
+                user.orElse(newUser),
                 attempt.getMultiplication(),
                 attempt.getResultAttempt(),
                 isCorrect);

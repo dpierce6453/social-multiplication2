@@ -25,7 +25,7 @@ final class MultiplicationResultAttemptController {
 
         boolean isCorrect = multiplicationService.checkAttempt(multiplicationResultAttempt);
         MultiplicationResultAttempt attemptCopy =
-                new MultiplicationResultAttempt( multiplicationResultAttempt.getDbUser(),
+                new MultiplicationResultAttempt( multiplicationResultAttempt.getUser(),
                         multiplicationResultAttempt.getMultiplication(),
                         multiplicationResultAttempt.getResultAttempt(),
                         isCorrect );
