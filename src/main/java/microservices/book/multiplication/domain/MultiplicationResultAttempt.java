@@ -9,8 +9,8 @@ public class MultiplicationResultAttempt {
     private Long id;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "USER_ID")
-    private final User user;
+    @JoinColumn(name = "PLAYER_ID")
+    private final Player player;
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "MULTIPLICATION_ID")
     private final Multiplication multiplication;
@@ -21,8 +21,8 @@ public class MultiplicationResultAttempt {
         return correct;
     }
 
-    public User getUser() {
-        return user;
+    public Player getPlayer() {
+        return player;
     }
 
     public Multiplication getMultiplication() {
@@ -33,8 +33,8 @@ public class MultiplicationResultAttempt {
         return resultAttempt;
     }
 
-    public MultiplicationResultAttempt(User user, Multiplication multiplication, int resultAttempt, boolean correct) {
-        this.user = user;
+    public MultiplicationResultAttempt(Player player, Multiplication multiplication, int resultAttempt, boolean correct) {
+        this.player = player;
         this.multiplication = multiplication;
         this.resultAttempt = resultAttempt;
         this.correct = correct;
@@ -45,16 +45,16 @@ public class MultiplicationResultAttempt {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MultiplicationResultAttempt that = (MultiplicationResultAttempt) o;
-        return getResultAttempt() == that.getResultAttempt() && getUser().equals(that.getUser()) && getMultiplication().equals(that.getMultiplication());
+        return getResultAttempt() == that.getResultAttempt() && getPlayer().equals(that.getPlayer()) && getMultiplication().equals(that.getMultiplication());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUser(), getMultiplication(), getResultAttempt());
+        return Objects.hash(getPlayer(), getMultiplication(), getResultAttempt());
     }
 
     public MultiplicationResultAttempt() {
-        user = null;
+        player = null;
         multiplication = null;
         resultAttempt = -1;
         correct = false;

@@ -1,5 +1,6 @@
 package microservices.book.multiplication.service;
 
+import microservices.book.multiplication.domain.Player;
 import microservices.book.multiplication.domain.User;
 import microservices.book.multiplication.domain.Multiplication;
 import microservices.book.multiplication.domain.MultiplicationResultAttempt;
@@ -29,8 +30,6 @@ class MultiplicationServiceImplTest {
     @Mock
     private MultiplicationResultAttemptRepository attemptRepository;
     @Mock
-    private UserRepository UserRepository;
-    @Mock
     private MultiplicationRepository multiplicationRepository;
     @Mock
     private PlayerRepository playerRepository;
@@ -40,7 +39,7 @@ class MultiplicationServiceImplTest {
     @BeforeEach
     public void setUp() { // With this call to initMocks we tell Mockito to process the annotations
         MockitoAnnotations.initMocks(this);
-        multiplicationServiceImpl = new MultiplicationServiceImpl(randomGeneratorService, attemptRepository, UserRepository, multiplicationRepository, playerRepository);
+        multiplicationServiceImpl = new MultiplicationServiceImpl(randomGeneratorService, attemptRepository, multiplicationRepository, playerRepository);
     }
 
     @Test
@@ -59,11 +58,11 @@ class MultiplicationServiceImplTest {
     public void checkCorrectAttemptTest() {
         // given
         Multiplication multiplication = new Multiplication(50, 60);
+        Player player = new Player("john_doe");
 
-        User user = new User("john_doe");
-        MultiplicationResultAttempt attempt = new MultiplicationResultAttempt(user, multiplication, 3000, false);
-        MultiplicationResultAttempt verifiedAttempt = new MultiplicationResultAttempt(user, multiplication, 3000, true);
-        given(UserRepository.findByAlias("john_doe")).willReturn(Optional.empty());
+        MultiplicationResultAttempt attempt = new MultiplicationResultAttempt(player, multiplication, 3000, false);
+        MultiplicationResultAttempt verifiedAttempt = new MultiplicationResultAttempt(player, multiplication, 3000, true);
+        given(playerRepository.findByAlias("john_doe")).willReturn(Optional.empty());
         // when
         boolean attemptResult = multiplicationServiceImpl.checkAttempt(attempt);
         // assert
@@ -74,9 +73,9 @@ class MultiplicationServiceImplTest {
     @Test public void checkWrongAttemptTest() {
         // given
         Multiplication multiplication = new Multiplication(50, 60);
-        User user = new User("john_doe");
-        MultiplicationResultAttempt attempt = new MultiplicationResultAttempt(user, multiplication, 3010, false);
-        given(UserRepository.findByAlias("john_doe")).willReturn(Optional.empty());
+        Player player = new Player("john_doe");
+        MultiplicationResultAttempt attempt = new MultiplicationResultAttempt(player, multiplication, 3010, false);
+        given(playerRepository.findByAlias("john_doe")).willReturn(Optional.empty());
 
         // when
         boolean attemptResult = multiplicationServiceImpl.checkAttempt(attempt);
@@ -89,13 +88,13 @@ class MultiplicationServiceImplTest {
     @Test public void retrieveStatsTest() {
         // given
         Multiplication multiplication = new Multiplication(50, 60);
-        User user = new User("john_doe");
-        MultiplicationResultAttempt attempt1 = new MultiplicationResultAttempt( user, multiplication, 3010, false);
-        MultiplicationResultAttempt attempt2 = new MultiplicationResultAttempt( user, multiplication, 3051, false);
+        Player player = new Player("john_doe");
+        MultiplicationResultAttempt attempt1 = new MultiplicationResultAttempt( player, multiplication, 3010, false);
+        MultiplicationResultAttempt attempt2 = new MultiplicationResultAttempt( player, multiplication, 3051, false);
         List<MultiplicationResultAttempt> latestAttempts = Lists.newArrayList(attempt1, attempt2);
 
-        given(UserRepository.findByAlias("john_doe")).willReturn(Optional.empty());
-        given(attemptRepository.findTop5ByUserAliasOrderByIdDesc("john_doe")) .willReturn(latestAttempts);
+        given(playerRepository.findByAlias("john_doe")).willReturn(Optional.empty());
+        given(attemptRepository.findTop5ByPlayerAliasOrderByIdDesc("john_doe")) .willReturn(latestAttempts);
 
         // when
         List<MultiplicationResultAttempt> latestAttemptsResult = multiplicationServiceImpl.getStatsForUser("john_doe");
