@@ -6,7 +6,6 @@ import microservices.book.multiplication.domain.MultiplicationResultAttempt;
 import microservices.book.multiplication.repository.MultiplicationRepository;
 import microservices.book.multiplication.repository.MultiplicationResultAttemptRepository;
 import microservices.book.multiplication.repository.PlayerRepository;
-import microservices.book.multiplication.repository.UserRepository;
 
 
 import org.springframework.beans.factory.annotation.Autowired;

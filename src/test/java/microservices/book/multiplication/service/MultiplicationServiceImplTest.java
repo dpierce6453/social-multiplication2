@@ -1,13 +1,11 @@
 package microservices.book.multiplication.service;
 
 import microservices.book.multiplication.domain.Player;
-import microservices.book.multiplication.domain.User;
 import microservices.book.multiplication.domain.Multiplication;
 import microservices.book.multiplication.domain.MultiplicationResultAttempt;
 import microservices.book.multiplication.repository.MultiplicationRepository;
 import microservices.book.multiplication.repository.MultiplicationResultAttemptRepository;
 import microservices.book.multiplication.repository.PlayerRepository;
-import microservices.book.multiplication.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
