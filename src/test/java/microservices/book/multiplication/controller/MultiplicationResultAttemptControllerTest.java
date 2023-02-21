@@ -15,11 +15,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
+import org.testng.collections.Lists;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @WebMvcTest
@@ -32,6 +36,7 @@ class MultiplicationResultAttemptControllerTest {
     private MockMvc mockMvc;
 
     private JacksonTester<MultiplicationResultAttempt> jsonResult;
+    private JacksonTester<List<MultiplicationResultAttempt>> jsonResultAttemptList;
 
 
     @BeforeEach
@@ -48,6 +53,24 @@ class MultiplicationResultAttemptControllerTest {
     @Test
     public void postResultReturnNotCorrect() throws Exception {
         genericParameterizeTest(false);
+    }
+
+    @Test
+    public void getUserStats() throws Exception {
+        //given
+        Player player = new Player("john_doe");
+        Multiplication multiplication = new Multiplication(50, 70);
+        MultiplicationResultAttempt attempt = new MultiplicationResultAttempt( player, multiplication, 3500, true);
+        List<MultiplicationResultAttempt> recentAttempts = Lists.newArrayList(attempt, attempt);
+        given(multiplicationService.getStatsForUser("john_doe")).willReturn(recentAttempts);
+
+        // when
+        MockHttpServletResponse response = mockMvc.perform( get("/results").param("alias", "john_doe")) .andReturn().getResponse();
+        // then
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).isEqualTo(
+                jsonResultAttemptList.write(recentAttempts).getJson());
+
     }
 
     /**

@@ -52,12 +52,12 @@ public class MultiplicationServiceImpl implements MultiplicationService {
     public boolean checkAttempt(final MultiplicationResultAttempt attempt) {
         Optional<Player> player = playerRepository.findByAlias(attempt.getPlayer().getAlias());
         Player newPlayer = new Player(attempt.getPlayer().getAlias());
-//        if(player.isEmpty()) {
-//            playerRepository.save(newPlayer);
-//        }
+        Optional<Multiplication> multiplication = multiplicationRepository.findByHashCodeValue(attempt.getMultiplication().hashCode());
+        Multiplication newMultiplication = new Multiplication(
+                attempt.getMultiplication().getFactorA(),
+                attempt.getMultiplication().getFactorB());
 
-//        Multiplication testMultiplication = new Multiplication(attempt.getMultiplication().getFactorA(), attempt.getMultiplication().getFactorB());
-//        multiplicationRepository.save(testMultiplication);
+
         // Avoids 'hack' attempts
         Assert.isTrue(!attempt.isCorrect(), "You can't send an attempt marked as correct!!");
 
@@ -68,7 +68,7 @@ public class MultiplicationServiceImpl implements MultiplicationService {
         // Creates a copy, now setting the 'correct' field accordingly
         MultiplicationResultAttempt checkedAttempt = new MultiplicationResultAttempt(
                 player.orElse(newPlayer),
-                attempt.getMultiplication(),
+                multiplication.orElse(newMultiplication),
                 attempt.getResultAttempt(),
                 isCorrect);
 
