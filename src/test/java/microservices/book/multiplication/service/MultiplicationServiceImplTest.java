@@ -4,6 +4,7 @@ import microservices.book.multiplication.domain.Player;
 import microservices.book.multiplication.domain.Multiplication;
 import microservices.book.multiplication.domain.MultiplicationResultAttempt;
 import microservices.book.multiplication.event.EventDispatcher;
+import microservices.book.multiplication.event.MultiplicationSolvedEvent;
 import microservices.book.multiplication.repository.MultiplicationRepository;
 import microservices.book.multiplication.repository.MultiplicationResultAttemptRepository;
 import microservices.book.multiplication.repository.PlayerRepository;
@@ -32,7 +33,6 @@ class MultiplicationServiceImplTest {
     private MultiplicationRepository multiplicationRepository;
     @Mock
     private PlayerRepository playerRepository;
-
     @Mock
     private EventDispatcher eventDispatcher;
 
@@ -65,11 +65,16 @@ class MultiplicationServiceImplTest {
         MultiplicationResultAttempt attempt = new MultiplicationResultAttempt(player, multiplication, 3000, false);
         MultiplicationResultAttempt verifiedAttempt = new MultiplicationResultAttempt(player, multiplication, 3000, true);
         given(playerRepository.findByAlias("john_doe")).willReturn(Optional.empty());
+        MultiplicationSolvedEvent event = new MultiplicationSolvedEvent(attempt.getId(),
+                attempt.getPlayer().getId(), true);
+
         // when
         boolean attemptResult = multiplicationServiceImpl.checkAttempt(attempt);
         // assert
         assertThat(attemptResult).isTrue();
         verify(attemptRepository).save(verifiedAttempt);
+        verify(eventDispatcher).send(event);
+
     }
 
     @Test public void checkWrongAttemptTest() {
@@ -79,11 +84,14 @@ class MultiplicationServiceImplTest {
         MultiplicationResultAttempt attempt = new MultiplicationResultAttempt(player, multiplication, 3010, false);
         given(playerRepository.findByAlias("john_doe")).willReturn(Optional.empty());
 
+        MultiplicationSolvedEvent event = new MultiplicationSolvedEvent(attempt.getId(),
+                attempt.getPlayer().getId(), false);
         // when
         boolean attemptResult = multiplicationServiceImpl.checkAttempt(attempt);
         // assert
         assertThat(attemptResult).isFalse();
         verify(attemptRepository).save(attempt);
+        verify(eventDispatcher).send(event);
 
     }
 

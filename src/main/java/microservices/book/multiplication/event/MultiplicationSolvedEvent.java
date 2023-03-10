@@ -40,13 +40,11 @@ public class MultiplicationSolvedEvent implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MultiplicationSolvedEvent that = (MultiplicationSolvedEvent) o;
-        return isCorrect() == that.isCorrect() &&
-                getMultiplicationResultAttemptId().equals(that.getMultiplicationResultAttemptId())
-                && getPlayerId().equals(that.getPlayerId());
+        return correct == that.correct && Objects.equals(multiplicationResultAttemptId, that.multiplicationResultAttemptId) && Objects.equals(playerId, that.playerId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getMultiplicationResultAttemptId(), getPlayerId(), isCorrect());
+        return Objects.hash(multiplicationResultAttemptId, playerId, correct);
     }
 }
