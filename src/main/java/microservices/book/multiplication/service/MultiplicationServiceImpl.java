@@ -3,6 +3,8 @@ package microservices.book.multiplication.service;
 import microservices.book.multiplication.domain.Player;
 import microservices.book.multiplication.domain.Multiplication;
 import microservices.book.multiplication.domain.MultiplicationResultAttempt;
+import microservices.book.multiplication.event.EventDispatcher;
+import microservices.book.multiplication.event.MultiplicationSolvedEvent;
 import microservices.book.multiplication.repository.MultiplicationRepository;
 import microservices.book.multiplication.repository.MultiplicationResultAttemptRepository;
 import microservices.book.multiplication.repository.PlayerRepository;
@@ -22,15 +24,19 @@ public class MultiplicationServiceImpl implements MultiplicationService {
     private final MultiplicationResultAttemptRepository attemptRepository;
     private final MultiplicationRepository multiplicationRepository;
     private final PlayerRepository playerRepository;
+    private final EventDispatcher eventDispatcher;
 
     @Autowired public MultiplicationServiceImpl(RandomGeneratorService randomGeneratorService,
                                                 final MultiplicationResultAttemptRepository attemptRepository,
-                                                MultiplicationRepository multiplicationRepository, PlayerRepository playerRepository)
+                                                final MultiplicationRepository multiplicationRepository,
+                                                final PlayerRepository playerRepository,
+                                                final EventDispatcher eventDispatcher)
     {
         this.randomGeneratorService = randomGeneratorService;
         this.attemptRepository = attemptRepository;
         this.multiplicationRepository = multiplicationRepository;
         this.playerRepository = playerRepository;
+        this.eventDispatcher = eventDispatcher;
     }
 
     @Override
@@ -75,6 +81,11 @@ public class MultiplicationServiceImpl implements MultiplicationService {
 
         //Stores the attempt
         attemptRepository.save(checkedAttempt);
+
+        eventDispatcher.send(new MultiplicationSolvedEvent(checkedAttempt.getId(),
+                checkedAttempt.getPlayer().getId(),
+                checkedAttempt.isCorrect())
+        );
 
         return isCorrect;
 

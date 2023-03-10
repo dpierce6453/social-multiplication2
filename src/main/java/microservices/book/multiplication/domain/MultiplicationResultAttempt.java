@@ -8,6 +8,10 @@ public class MultiplicationResultAttempt {
     @GeneratedValue
     private Long id;
 
+    public Long getId() {
+        return id;
+    }
+
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "PLAYER_ID")
     private final Player player;

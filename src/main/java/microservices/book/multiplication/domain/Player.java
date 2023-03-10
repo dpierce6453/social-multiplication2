@@ -14,7 +14,11 @@ public class Player {
         @Column(name = "PLAYER_ID")
         private Long id;
 
-        public final String alias;
+    public Long getId() {
+        return id;
+    }
+
+    public final String alias;
         public Player(String alias) {
             this.alias = alias;
         }
