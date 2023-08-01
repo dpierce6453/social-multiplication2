@@ -39,10 +39,7 @@ public class MultiplicationServiceImpl implements MultiplicationService {
         this.eventDispatcher = eventDispatcher;
     }
 
-    @Override
-    public List<MultiplicationResultAttempt> getStatsForUser(String playerAlias) {
-        return attemptRepository.findTop5ByPlayerAliasOrderByIdDesc(playerAlias);
-    }
+
 
     @Override
     public Multiplication createRandomMultiplication() {
@@ -89,5 +86,16 @@ public class MultiplicationServiceImpl implements MultiplicationService {
 
         return isCorrect;
 
+    }
+
+    @Override
+    public List<MultiplicationResultAttempt> getStatsForUser(String playerAlias) {
+        return attemptRepository.findTop5ByPlayerAliasOrderByIdDesc(playerAlias);
+    }
+
+    @Override
+    public MultiplicationResultAttempt getResultById(final Long resultId) {
+        Optional<MultiplicationResultAttempt> resultAttempt = attemptRepository.findById(resultId);
+        return resultAttempt.orElseGet(MultiplicationResultAttempt::new);
     }
 }

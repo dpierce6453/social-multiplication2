@@ -73,6 +73,22 @@ class MultiplicationResultAttemptControllerTest {
 
     }
 
+    @Test
+    public void getResultByIdTest() throws Exception {
+        //given
+        Player player = new Player("john_doe");
+        Multiplication multiplication = new Multiplication(50, 70);
+        MultiplicationResultAttempt attempt = new MultiplicationResultAttempt( player, multiplication, 3500, true);
+        given(multiplicationService.getResultById(4L)).willReturn(attempt);
+
+        //when
+        MockHttpServletResponse response = mockMvc.perform(get("/results/4")).andReturn().getResponse();
+
+        //then
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).isEqualTo(jsonResult.write(attempt).getJson());
+    }
+
     /**
      * This test will force multiplicationservice.checkAttempt to return the passed in value (either true or false)
      * The MultiplicationResultAttempt is created then posted.  The same MultiplicationResultAttempt object should be
