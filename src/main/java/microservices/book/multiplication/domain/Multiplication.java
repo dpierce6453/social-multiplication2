@@ -1,11 +1,20 @@
 package microservices.book.multiplication.domain;
 
+
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
-import java.util.Objects;
+@RequiredArgsConstructor
+@Getter
+@ToString
+@EqualsAndHashCode
 @Entity
 public class Multiplication {
 
@@ -18,51 +27,20 @@ public class Multiplication {
 
     private final int factorB;
 
-    private final int hashCodeValue;
+//    private final int hashCodeValue;
 
-    public Multiplication(int factorA, int factorB)
-    {
-        this.factorA = factorA;
-        this.factorB = factorB;
-        hashCodeValue = hashCode();
-    }
-
+//    public Multiplication(int factorA, int factorB)
+//    {
+//        this.factorA = factorA;
+//        this.factorB = factorB;
+////        hashCodeValue = hashCode();
+//    }
     public Multiplication() {
         this(0,0);
     }
 
-    @Override
-    public boolean equals(Object o)
-    {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Multiplication that = (Multiplication) o;
-        return factorA == that.factorA &&
-                factorB == that.factorB;
-    }
+//    public int getHashCodeValue() {
+//        return hashCodeValue;
+//    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(factorA, factorB);
-    }
-
-    public int getFactorB() {
-        return factorB;
-    }
-
-    public int getFactorA() {
-        return factorA;
-    }
-
-    public int getHashCodeValue() {
-        return hashCodeValue;
-    }
-
-    @Override
-    public String toString() {
-        return "Multiplication{" +
-                "factorA=" + factorA +
-                ", factorB=" + factorB +
-                '}';
-    }
 }

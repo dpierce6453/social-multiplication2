@@ -3,8 +3,8 @@ package microservices.book.multiplication.repository;
 import microservices.book.multiplication.domain.Multiplication;
 import org.springframework.data.repository.CrudRepository;
 
-import java.util.Optional;
+import java.util.List;
 
 public interface MultiplicationRepository extends CrudRepository<Multiplication, Long> {
-    Optional<Multiplication> findByHashCodeValue(int hashCode);
+     List<Multiplication> findByFactorA(int FactorA);
 }

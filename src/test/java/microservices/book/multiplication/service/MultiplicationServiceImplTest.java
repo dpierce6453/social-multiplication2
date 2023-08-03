@@ -103,12 +103,28 @@ class MultiplicationServiceImplTest {
         MultiplicationResultAttempt attempt2 = new MultiplicationResultAttempt( player, multiplication, 3051, false);
         List<MultiplicationResultAttempt> latestAttempts = Lists.newArrayList(attempt1, attempt2);
 
-        given(playerRepository.findByAlias("john_doe")).willReturn(Optional.empty());
+        //given(playerRepository.findByAlias("john_doe")).willReturn(Optional.empty());
         given(attemptRepository.findTop5ByPlayerAliasOrderByIdDesc("john_doe")) .willReturn(latestAttempts);
 
         // when
         List<MultiplicationResultAttempt> latestAttemptsResult = multiplicationServiceImpl.getStatsForUser("john_doe");
         // then
         assertThat(latestAttemptsResult).isEqualTo(latestAttempts);
+    }
+
+    @Test
+    public void getResultsByIdTest() {
+        Multiplication multiplication = new Multiplication(50, 60);
+        Player player = new Player("john_doe");
+        MultiplicationResultAttempt attempt = new MultiplicationResultAttempt( player, multiplication, 3010, false);
+
+        //given
+        given(attemptRepository.findById(4L)).willReturn(Optional.of(attempt));
+        given(attemptRepository.findById(5L)).willReturn(Optional.empty());
+
+        MultiplicationResultAttempt getAttempt = multiplicationServiceImpl.getResultById(4L);
+        assertThat(getAttempt).isEqualTo(attempt);
+        MultiplicationResultAttempt getAttempt2 = multiplicationServiceImpl.getResultById(5L);
+        assertThat(getAttempt2).isEqualTo(new MultiplicationResultAttempt());
     }
 }

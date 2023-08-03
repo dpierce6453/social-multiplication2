@@ -47,15 +47,29 @@ public class MultiplicationServiceImpl implements MultiplicationService {
         int FactorB = randomGeneratorService.generateRandomFactor();
         Multiplication ret = new Multiplication(FactorA, FactorB);
         // Has this multiplication been seen before?
-        Optional<Multiplication> multiplication = multiplicationRepository.findByHashCodeValue(ret.getHashCodeValue());
-        return multiplication.orElse(ret);
+        Optional<Multiplication> match = seeIfMultiplicationExists(ret);
+        return match.orElse(ret);
     }
+
+    @SuppressWarnings("ReassignedVariable")
+    private Optional<Multiplication> seeIfMultiplicationExists(Multiplication multiplication) {
+        Optional<Multiplication> match = Optional.empty();
+        List<Multiplication> listOfMultiplications = multiplicationRepository.findByFactorA(multiplication.getFactorA());
+        for(Multiplication mult: listOfMultiplications) {
+            if(mult.getFactorB() == multiplication.getFactorB()) {
+                match = Optional.of(mult);
+                break;
+            }
+        }
+        return match;
+    }
+
     @Transactional
     @Override
     public boolean checkAttempt(final MultiplicationResultAttempt attempt) {
         Optional<Player> player = playerRepository.findByAlias(attempt.getPlayer().getAlias());
         Player newPlayer = new Player(attempt.getPlayer().getAlias());
-        Optional<Multiplication> multiplication = multiplicationRepository.findByHashCodeValue(attempt.getMultiplication().hashCode());
+        Optional<Multiplication> multiplication = seeIfMultiplicationExists(attempt.getMultiplication());
         Multiplication newMultiplication = new Multiplication(
                 attempt.getMultiplication().getFactorA(),
                 attempt.getMultiplication().getFactorB());

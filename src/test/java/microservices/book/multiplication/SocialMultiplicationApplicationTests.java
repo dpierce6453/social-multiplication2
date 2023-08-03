@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.Optional;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -35,7 +35,7 @@ class SocialMultiplicationApplicationTests {
 	@Test
 	public void createRandomMultiplicationTest() {
 		given(randomGeneratorService.generateRandomFactor()).willReturn(50, 30);
-		given(multiplicationRepository.findByHashCodeValue(anyInt())).willReturn(Optional.empty());
+		given(multiplicationRepository.findByFactorA(anyInt())).willReturn(Collections.emptyList());
 
 		Multiplication multiplication = multiplicationService.createRandomMultiplication();
 
